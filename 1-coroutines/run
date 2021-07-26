@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# download kotlinx-coroutines-* libraries
+BASE_URL='https://repo1.maven.org/maven2/org/jetbrains/kotlinx'
+VERSION='1.5.1'
+LIBS=( "kotlinx-coroutines-core" "kotlinx-coroutines-core-jvm" "kotlinx-coroutines-jdk8" )
+mkdir -p ../lib
+for lib in ${LIBS[@]}
+do
+    lib_file="$lib-$VERSION.jar"
+    lib_path="../lib/$lib_file"
+    if [ ! -f $lib_path ]; then
+        echo "Downloading $lib_file..."
+        curl "$BASE_URL/$lib/$VERSION/$lib_file" -s -o $lib_path
+    fi
+done
+
+# run kotlin script
+kotlinc -script main.kts \
+-cp ../lib/kotlinx-coroutines-core-1.5.1.jar:../lib/kotlinx-coroutines-core-jvm-1.5.1.jar:../lib/kotlinx-coroutines-jdk8-1.5.1.jar \
+-Xopt-in=kotlin.RequiresOptIn

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# run kotlin script
+kotlinc -script main.kts
